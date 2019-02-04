@@ -6,10 +6,12 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      budget: []
+      budget: [],
+      facturado: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.obtenerPresupuesto = this.obtenerPresupuesto.bind(this);
+    this.obtenerFacturado = this.obtenerFacturado.bind(this);
   }
 
   componentDidMount() {
@@ -33,8 +35,22 @@ class App extends Component {
       });
   }
 
+  obtenerFacturado(cr) {
+    axios
+      .get(`/data/facturado/${cr}`)
+      .then(response => {
+        let facturado = [];
+        response.data.forEach(el => facturado.push(+el.monto / 100));
+        this.setState({ facturado });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   handleChange(e) {
     this.obtenerPresupuesto(e.target.value);
+    this.obtenerFacturado(e.target.value);
   }
 
   render() {
@@ -77,7 +93,13 @@ class App extends Component {
             ],
             datasets: [
               {
+                label: 'presupuesto',
                 data: this.state.budget
+              },
+              {
+                label: 'facturado',
+                data: this.state.facturado,
+                backgroundColor: 'rgb(255, 99, 132)'
               }
             ]
           }}
