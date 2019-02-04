@@ -4,12 +4,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-const db = require('./db');
+const { client } = require('./db');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var dataRouter = require('./routes/data');
 
 var app = express();
+
+client.connect(err => {
+  if (err) throw err.stack;
+  console.log('Conected to PostgreSQL');
+});
 
 app.use(logger('dev'));
 app.use(express.json());
