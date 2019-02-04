@@ -11,6 +11,7 @@ router.get('/presupuesto/:cr', function(req, res, next) {
     GROUP BY mes
     ORDER BY mes;`,
     (error, response) => {
+      if (error) throw error;
       res.send(response.rows);
     }
   );
@@ -23,6 +24,7 @@ router.get('/facturado/:cr', function(req, res, next) {
     GROUP BY mes
     ORDER BY mes;`,
     (error, response) => {
+      if (error) throw error;
       res.send(response.rows);
     }
   );
