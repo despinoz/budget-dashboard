@@ -28,7 +28,19 @@ router.get('/facturado/:cr', function(req, res, next) {
       res.send(response.rows);
     }
   );
-  // res.send('facturado');
+});
+
+router.get('/facturacion-por-cr', function(req, res, next) {
+  client.query(
+    `SELECT SUM(monto) AS total, cr FROM facturas
+    GROUP BY cr
+    ORDER BY total DESC;`,
+    (error, response) => {
+      if (error) throw error;
+      res.send(response.rows);
+    }
+  );
+  // res.send('facturacion-por-cr');
 });
 
 module.exports = router;
